@@ -4,6 +4,7 @@ export const COLORS = {
   white: '#FFFFFF',
   black: '#000000',
   error: '#FF0000',
+  primary: '#F3740A',
 };
 
 export const FONT_FAMILIES = {
