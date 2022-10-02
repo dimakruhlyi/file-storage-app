@@ -1,2 +1,0 @@
-// Navigation stack
-export {};

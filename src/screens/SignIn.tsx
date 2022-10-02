@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
@@ -7,6 +7,7 @@ import Button from '../components/ui/Button';
 import Text from '../components/typography/Text';
 import { COLORS } from '../shared/constants';
 import { SCREEN } from '../navigation/constants';
+import { AuthContext } from '../context/AuthProvider';
 
 interface ISignIn {
     navigation: NavigationProp<any, any>;
@@ -19,8 +20,10 @@ type SignInFormInputs = {
 
 function SignIn({ navigation }: ISignIn): JSX.Element {
     const { control, handleSubmit, formState: { errors } } = useForm<SignInFormInputs>();
+    const { login } = useContext(AuthContext);
 
     function onSubmit(data: SignInFormInputs) {
+        login(data.login, data.password);
         console.log(JSON.stringify(data));
     }
 

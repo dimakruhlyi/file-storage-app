@@ -1,39 +1,41 @@
-import React, { useState } from 'react';
-import { View } from 'react-native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import React, { useContext, useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import auth from '@react-native-firebase/auth';
 import appTheme from './src/shared/appTheme';
-import { SCREEN } from './src/navigation/constants';
-import SignIn from './src/screens/SignIn';
-import SignUp from './src/screens/SignUp';
-import Home from './src/screens/Home';
+import { AuthContext, AuthProvider, UserType } from './src/context/AuthProvider';
+import { AuthNavigation, DrawerNavigation } from './src/navigation/NavigationStack';
 
-const Drawer = createDrawerNavigator();
-const AuthStack = createNativeStackNavigator();
 
 const App = () => {
+  const { user, setUser } = useContext(AuthContext);
+  const [initializing, setInitializing] = useState(true);
+
+  function onAuthStateChanged(user: any) {
+    console.log('user:', user);
+    setUser(user as UserType);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
+  }, []);
+
+  if (initializing) return null;
 
   return (
     <NavigationContainer theme={appTheme}>
-      {false ? (
-        <Drawer.Navigator>
-          <Drawer.Screen name={SCREEN.Home} component={Home} />
-        </Drawer.Navigator>
+      {user ? (
+        <DrawerNavigation />
       ) : (
-        <AuthStack.Navigator>
-          <AuthStack.Group screenOptions={{
-            headerShown: false
-          }}>
-            <AuthStack.Screen name={SCREEN.SignIn} component={SignIn} />
-            <AuthStack.Screen name={SCREEN.SignUp} component={SignUp} />
-          </AuthStack.Group>
-        </AuthStack.Navigator>
+        <AuthNavigation />
       )}
-
     </NavigationContainer>
-
   );
 };
 
-export default App;
+export default () => (
+  <AuthProvider>
+    <App />
+  </AuthProvider>
+);

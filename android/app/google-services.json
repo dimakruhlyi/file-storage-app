@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "162167815270",
+    "project_id": "files-storage-30c83",
+    "storage_bucket": "files-storage-30c83.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:162167815270:android:8d2542ce3be38f3bbb01a7",
+        "android_client_info": {
+          "package_name": "com.filestorage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "162167815270-e9q7n7qiq8ps65n6nkr46b8pmlnvnrsj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBun4u8oOzhCKBn73-_mJTyB2SxgP08L4I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "162167815270-e9q7n7qiq8ps65n6nkr46b8pmlnvnrsj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
