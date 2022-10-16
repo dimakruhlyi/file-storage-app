@@ -1,6 +1,7 @@
 export const COLORS = {
   darkblue: '#36486b',
   darkgray: '#454140',
+  gray: '#979797',
   white: '#FFFFFF',
   black: '#000000',
   error: '#FF0000',

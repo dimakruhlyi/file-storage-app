@@ -2,16 +2,18 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigationProp } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
-import { SCREEN } from '../navigation/constants';
+import { SCREEN, NAVIGATION_STACK } from '../navigation/constants';
 import { addSecretPhrase } from '../store/slices/mainSlice';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import Text from '../components/typography/Text';
 import { COLORS } from '../shared/constants';
+import { screenContainer } from '../shared/baseStyle';
 
 interface ISecretPhrase {
-    navigation: any;
+    navigation: NavigationProp<any, any>;
 }
 
 type SecretPhraseInput = {
@@ -25,8 +27,15 @@ function SecretPhrase({ navigation }: ISecretPhrase): JSX.Element {
     async function onSubmit(data: SecretPhraseInput) {
         await AsyncStorage.setItem('secretPhrase', data.secretPhrase);
         dispatch(addSecretPhrase(data.secretPhrase));
-        navigation.navigate(SCREEN.Home, {
-            isSecretCreateFlow: true,
+        onNavigateHome();
+    }
+
+    function onNavigateHome() {
+        navigation.navigate(NAVIGATION_STACK.Main, {
+            screen: SCREEN.Home,
+            params: {
+                isSecretCreateFlow: true,
+            }
         });
     }
 
@@ -35,7 +44,7 @@ function SecretPhrase({ navigation }: ISecretPhrase): JSX.Element {
     }
 
     return (
-        <View style={styles.screenContainer}>
+        <View style={screenContainer}>
             <Text color={COLORS.primary}>Please create the secret phrase for your account.</Text>
             <View style={styles.formWrapper}>
                 <Controller control={control} render={() => (
@@ -48,9 +57,7 @@ function SecretPhrase({ navigation }: ISecretPhrase): JSX.Element {
             </View>
             <View style={{ alignItems: 'center' }}>
                 <Text color={COLORS.black}>or</Text>
-                <TouchableOpacity onPress={() => navigation.navigate(SCREEN.Home, {
-                    isSecretCreateFlow: true,
-                })}><Text color={COLORS.darkblue}>Skip</Text></TouchableOpacity>
+                <TouchableOpacity onPress={onNavigateHome}><Text color={COLORS.darkblue}>Skip</Text></TouchableOpacity>
             </View>
 
         </View>
@@ -58,12 +65,6 @@ function SecretPhrase({ navigation }: ISecretPhrase): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-    screenContainer: {
-        paddingHorizontal: 20,
-        flexGrow: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     formWrapper: {
         width: '100%',
         padding: 15,
