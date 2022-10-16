@@ -35,13 +35,13 @@ function SignIn({ navigation }: ISignIn): JSX.Element {
         <ScrollView contentContainerStyle={styles.signInContainer}>
             <View style={styles.formWrapper}>
                 <Controller control={control} render={() => (
-                    <Input name="login" label='Login' control={control} />
+                    <Input name="login" label='Login*' control={control} />
                 )}
                     name="login"
                     rules={{ required: true }}
                 />
                 <Controller control={control} render={() => (
-                    <Input name="password" label='Password' showContentVisibilityControl={true} control={control} />
+                    <Input name="password" label='Password*' showContentVisibilityControl={true} control={control} />
                 )}
                     name="password"
                     rules={{ required: true }}

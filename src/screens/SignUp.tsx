@@ -15,6 +15,7 @@ interface ISignUp {
 
 type SignUpFormInputs = {
     login: string;
+    userName: string;
     password: string;
     repeatPassword: string;
 };
@@ -25,7 +26,7 @@ function SignUp({ navigation }: ISignUp): JSX.Element {
 
     function onSubmit(data: SignUpFormInputs) {
         console.log(JSON.stringify(data));
-        register(data.login, data.password);
+        register(data.login, data.password, data.userName);
     }
 
     function onError(errors: any) {
@@ -36,19 +37,25 @@ function SignUp({ navigation }: ISignUp): JSX.Element {
         <ScrollView contentContainerStyle={styles.signUpContainer}>
             <View style={styles.formWrapper}>
                 <Controller control={control} render={() => (
-                    <Input name="login" label='Login' control={control} />
+                    <Input name="login" label='Login*' control={control} />
                 )}
                     name="login"
                     rules={{ required: true }}
                 />
                 <Controller control={control} render={() => (
-                    <Input name="password" label='Password' showContentVisibilityControl={true} control={control} />
+                    <Input name="userName" label='Your Name' control={control} />
+                )}
+                    name="userName"
+                    rules={{ required: false }}
+                />
+                <Controller control={control} render={() => (
+                    <Input name="password" label='Password*' showContentVisibilityControl={true} control={control} />
                 )}
                     name="password"
                     rules={{ required: true }}
                 />
                 <Controller control={control} render={() => (
-                    <Input name="repeatPassword" label='Repeat password' showContentVisibilityControl={true} control={control} />
+                    <Input name="repeatPassword" label='Repeat password*' showContentVisibilityControl={true} control={control} />
                 )}
                     name="repeatPassword"
                     rules={{ required: true }}

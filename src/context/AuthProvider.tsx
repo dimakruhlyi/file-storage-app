@@ -1,27 +1,18 @@
 import React, { createContext, useState } from 'react';
-import auth from '@react-native-firebase/auth';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 interface IAuth {
-    user: UserType | null;
-    setUser: (user: UserType) => void;
+    user: FirebaseAuthTypes.User | null;
+    setUser: (user: FirebaseAuthTypes.User) => void;
     login: (email: string, password: string) => Promise<any>;
-    register: (email: string, password: string) => Promise<any>;
+    register: (email: string, password: string, userName: string) => Promise<any>;
     logout: () => Promise<any>;
 }
-
-export type UserType = {
-    displayName: string | null,
-    email: string,
-    emailVerified: boolean,
-    isAnonymous: boolean,
-    phoneNumber: string | null,
-    photoURL: string | null,
-};
 
 export const AuthContext = createContext<IAuth>({} as IAuth);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode; }): JSX.Element => {
-    const [user, setUser] = useState<UserType | null>(null);
+    const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
 
     async function login(email: string, password: string): Promise<any> {
         try {
@@ -31,9 +22,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode; }): JSX.
         }
     }
 
-    async function register(email: string, password: string) {
+    async function register(email: string, password: string, userName: string = '') {
         try {
             await auth().createUserWithEmailAndPassword(email, password);
+            await auth().currentUser!.updateProfile({
+                displayName: userName
+            });
+            const updatedUser = await auth().currentUser;
+            setUser(updatedUser);
         } catch (err) {
             console.log('Register error:', err);
         }
