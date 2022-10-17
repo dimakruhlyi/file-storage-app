@@ -22,9 +22,14 @@ export const imageSlice = createSlice({
         state.imageData = [...state.imageData, action.payload];
       }
     },
+    removeImage: (state, action: PayloadAction<string>) => {
+      state.imageData = state.imageData.filter(
+        image => image.modificationDate !== action.payload,
+      );
+    },
   },
 });
 
-export const { addImageData } = imageSlice.actions;
+export const { addImageData, removeImage } = imageSlice.actions;
 
 export default imageSlice.reducer;

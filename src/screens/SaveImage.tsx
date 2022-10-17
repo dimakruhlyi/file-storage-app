@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationProp } from '@react-navigation/native';
 import ImagePicker from 'react-native-image-crop-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { addImageData } from '../store/slices/imageSlice';
 import { SCREEN } from '../navigation/constants';
-import Button from '../components/ui/Button';
 import Text, { FontWeights, TextAlign } from '../components/typography/Text';
 import { COLORS } from '../shared/constants';
 import { screenContainer } from '../shared/baseStyle';
@@ -16,8 +14,6 @@ import Iconm from '../components/ui/Iconm';
 interface ISaveImage {
     navigation: NavigationProp<any, any>;
 }
-
-
 
 function SaveImage({ navigation }: ISaveImage): JSX.Element {
     const dispatch = useDispatch();
@@ -29,7 +25,6 @@ function SaveImage({ navigation }: ISaveImage): JSX.Element {
             height: 400,
             cropping: true
         }).then(image => {
-            console.log('image:', image);
             dispatch(addImageData(image));
         });
     }
@@ -43,17 +38,25 @@ function SaveImage({ navigation }: ISaveImage): JSX.Element {
                 </TouchableOpacity>
             </View>
             {imageData && imageData.length > 0 && (
-                <View style={{ width: '100%', marginTop: 20 }}>
+                <View style={styles.savedImagesContainer}>
                     <Text weight={FontWeights.Bold} size={20} align={TextAlign.Center}>Your saved images are shown below.</Text>
-                    <View style={{ marginTop: 10, flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+                    <View style={styles.savedImagesBlock}>
                         {imageData.map(image => (
-                            <Image
-                                source={{
-                                    uri: image.path
-                                }}
-                                style={{ width: '45%', height: 150, borderRadius: 10, margin: 5 }}
+                            <TouchableOpacity
+                                style={styles.imageItem}
+                                onPress={() => navigation.navigate(SCREEN.ImageDetails, {
+                                    imageDetails: image,
+                                })}
                                 key={image.modificationDate}
-                            />
+                            >
+                                <Image
+                                    source={{
+                                        uri: image.path
+                                    }}
+                                    style={styles.imageStyle}
+                                />
+                            </TouchableOpacity>
+
                         ))}
                     </View>
                 </View>
@@ -75,6 +78,24 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: COLORS.gray,
         borderStyle: 'dashed'
+    },
+    savedImagesContainer: {
+        width: '100%',
+        marginTop: 20
+    },
+    savedImagesBlock: {
+        marginTop: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap'
+    },
+    imageItem: {
+        width: '45%',
+        margin: 5
+    },
+    imageStyle: {
+        height: 150,
+        borderRadius: 10
     }
 });
 

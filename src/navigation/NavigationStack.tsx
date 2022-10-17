@@ -4,6 +4,10 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import AppDrawerContent from './AppDrawerContent';
 import { SCREEN, NAVIGATION_STACK } from './constants';
+import { NavigationProp } from '@react-navigation/native';
+import { COLORS } from '../shared/constants';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store';
 import Iconm from '../components/ui/Iconm';
 import Home from '../screens/Home';
 import SignIn from '../screens/SignIn';
@@ -11,10 +15,7 @@ import SignUp from '../screens/SignUp';
 import SecretPhrase from '../screens/SecretPhrase';
 import SaveImage from '../screens/SaveImage';
 import SaveFile from '../screens/SaveFile';
-import { NavigationProp } from '@react-navigation/native';
-import { COLORS } from '../shared/constants';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store';
+import ImageDetails from '../screens/ImageDetails';
 
 const Drawer = createDrawerNavigator();
 const MainStack = createNativeStackNavigator();
@@ -80,6 +81,7 @@ function MainStackNavigation({ navigation }: { navigation: NavigationProp<any, a
       </MainStack.Group>
       <MainStack.Group screenOptions={MainStackOptions(navigation) as NativeStackNavigationOptions}>
         <MainStack.Screen name={SCREEN.SaveImage} component={SaveImage} />
+        <MainStack.Screen name={SCREEN.ImageDetails} component={ImageDetails} />
         <MainStack.Screen name={SCREEN.SaveFile} component={SaveFile} />
       </MainStack.Group>
     </MainStack.Navigator>

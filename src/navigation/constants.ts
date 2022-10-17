@@ -4,6 +4,7 @@ export const SCREEN = {
   Home: 'Home',
   SecretPhrase: 'SecretPhrase',
   SaveImage: 'SaveImage',
+  ImageDetails: 'ImageDetails',
   SaveFile: 'SaveFile',
 };
 
