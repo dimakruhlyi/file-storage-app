@@ -1,10 +1,12 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import mainReducer from './slices/mainSlice';
 import imageReducer from './slices/imageSlice';
+import fileReducer from './slices/fileSlice';
 
 const combinedReducer = combineReducers({
   mainReducer: mainReducer,
   imageReducer: imageReducer,
+  fileReducer: fileReducer,
 });
 
 export const store = configureStore({

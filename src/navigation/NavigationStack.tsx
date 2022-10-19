@@ -22,7 +22,6 @@ const MainStack = createNativeStackNavigator();
 const AuthStack = createNativeStackNavigator();
 
 function DrawerNavigation() {
-  const { secretPhrase } = useSelector((state: RootState) => state.mainReducer);
   return (
     <Drawer.Navigator
       screenOptions={{
@@ -30,14 +29,6 @@ function DrawerNavigation() {
       }}
       initialRouteName={SCREEN.SecretPhrase}
       drawerContent={props => <AppDrawerContent {...props} />}>
-      {/*ToDo: hide drawer on the screen */}
-      {!secretPhrase && (
-        <Drawer.Screen name={SCREEN.SecretPhrase} component={SecretPhrase} options={{
-          drawerItemStyle: {
-            backgroundColor: 'red'
-          }
-        }} />
-      )}
       <Drawer.Screen name={NAVIGATION_STACK.Main} component={MainStackNavigation} />
     </Drawer.Navigator>
   );
@@ -71,12 +62,16 @@ const MainStackOptions = (navigation: NavigationProp<any, any>) => {
 
 
 function MainStackNavigation({ navigation }: { navigation: NavigationProp<any, any>; }) {
-
+  const { secretPhrase } = useSelector((state: RootState) => state.mainReducer);
   return (
-    <MainStack.Navigator initialRouteName={SCREEN.SecretPhrase}>
+    <MainStack.Navigator>
       <MainStack.Group screenOptions={{
         headerShown: false,
       }}>
+        {/*ToDo: hide drawer on the screen */}
+        {!secretPhrase && (
+          <MainStack.Screen name={SCREEN.SecretPhrase} component={SecretPhrase} />
+        )}
         <MainStack.Screen name={SCREEN.Home} component={Home} />
       </MainStack.Group>
       <MainStack.Group screenOptions={MainStackOptions(navigation) as NativeStackNavigationOptions}>
