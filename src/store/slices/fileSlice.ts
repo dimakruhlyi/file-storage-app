@@ -3,8 +3,12 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { DocumentPickerResponse } from 'react-native-document-picker';
 
 export interface IFileState {
-  fileData: DocumentPickerResponse[];
+  fileData: IFileDocument[];
 }
+
+export interface IFileDocument extends DocumentPickerResponse {
+  filePassword: string;
+};
 
 const initialState: IFileState = {
   fileData: [],
@@ -14,7 +18,7 @@ export const fileSlice = createSlice({
   name: 'file',
   initialState,
   reducers: {
-    addFileData: (state, action: PayloadAction<DocumentPickerResponse>) => {
+    addFileData: (state, action: PayloadAction<IFileDocument>) => {
       const isFileExists = state.fileData.find(
         file => file.name === action.payload.name,
       );

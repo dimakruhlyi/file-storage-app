@@ -1,17 +1,40 @@
-import React from 'react';
-import { Modal as RNModal, StyleSheet, TouchableOpacity } from 'react-native';
-import Iconm from './ui/Iconm';
+import React, { useState } from 'react';
+import { Modal as RNModal, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useForm, Controller } from 'react-hook-form';
+import Input from '../components/ui/Input';
+import Text, { TextAlign } from './typography/Text';
+import Button from './ui/Button';
 import { COLORS } from '../shared/constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { setVerifiedSecret } from '../store/slices/mainSlice';
+import { RootState } from '../store';
 
 interface ISecretVerifyModal {
     isVisible: boolean;
-    children: React.ReactNode;
 }
+
+type SecretVerifyInput = {
+    secretVerify: string,
+};
 
 function SecretVerifyModal({
     isVisible,
-    children,
 }: ISecretVerifyModal): JSX.Element {
+    const { control, handleSubmit, formState: { errors } } = useForm<SecretVerifyInput>();
+    const { secretPhrase } = useSelector((state: RootState) => state.mainReducer);
+    const [isSecretWrong, setIsSecretWrong] = useState<boolean>(false);
+    const dispatch = useDispatch();
+
+    function onSecretVerify(data: SecretVerifyInput) {
+        if (secretPhrase === data.secretVerify.trim()) {
+            console.log('matches');
+            setIsSecretWrong(false);
+            dispatch(setVerifiedSecret(true));
+        } else {
+            setIsSecretWrong(true);
+        }
+    }
+
     return (
         <RNModal animationType="fade" transparent visible={isVisible}>
             <TouchableOpacity
@@ -22,7 +45,18 @@ function SecretVerifyModal({
                     activeOpacity={1}
                     style={styles.modalView}
                     onPress={e => e.stopPropagation()}>
-                    {children}
+                     <View style={styles.formWrapper}>
+                        <Text color={COLORS.darkgray} align={TextAlign.Center}>Please enter the secret phrase for your account.</Text>
+                        <View style={{ marginTop: 15 }} >
+                            <Controller control={control} render={() => (
+                                <Input name="secretVerify" control={control} showContentVisibilityControl={true} error={isSecretWrong ? "Wrong secret phrase" : ""} />
+                            )}
+                                name="secretVerify"
+                                rules={{ required: true }}
+                            />
+                            <Button label="Continue" onPress={handleSubmit(onSecretVerify)} style={{ marginTop: 15 }} />
+                        </View>
+                    </View>
                 </TouchableOpacity>
             </TouchableOpacity>
         </RNModal>
@@ -49,6 +83,10 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
     },
+    formWrapper: {
+        width: '100%',
+        padding: 15,
+    }
 });
 
 export default SecretVerifyModal;

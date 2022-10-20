@@ -1,6 +1,10 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { COLORS } from '../shared/constants';
 import Text, { TextAlign } from './typography/Text';
+import { useDispatch } from 'react-redux';
+import { removeFile } from '../store/slices/fileSlice';
+import Iconm from './ui/Iconm';
 
 interface IDocumentItem {
   name: string | null;
@@ -10,8 +14,19 @@ interface IDocumentItem {
 
 function DocumentItem(props: IDocumentItem): JSX.Element {
   const { name, type, onFilePress } = props;
+  const dispatch = useDispatch();
+
+  function onRemovePress(): void {
+    dispatch(removeFile(name!));
+  }
+
   return (
     <TouchableOpacity onPress={onFilePress} style={styles.documentContainer}>
+      <TouchableOpacity
+        style={styles.removeFileControl}
+        onPress={onRemovePress}>
+        <Iconm name="close" size={16} color={COLORS.darkgray} />
+      </TouchableOpacity>
       <Image
         source={require('../../assets/images/files/pdf.png')}
         style={styles.imageStyle}
@@ -33,6 +48,11 @@ const styles = StyleSheet.create({
     width: 75,
     height: 75,
     resizeMode: 'contain',
+  },
+  removeFileControl: {
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+    padding: 2,
   },
 });
 
