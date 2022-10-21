@@ -22,7 +22,7 @@ function Home({ route, navigation }: IHome): JSX.Element {
     const isSecretCreateFlow = route.params?.isSecretCreateFlow;
     const { secretPhrase, isSecretVerified } = useSelector((state: RootState) => state.mainReducer);
     const { user } = useContext(AuthContext);
-    const showSecretVerifyModal = !isSecretCreateFlow && secretPhrase && !isSecretVerified && false;
+    const showSecretVerifyModal = !isSecretCreateFlow && secretPhrase && !isSecretVerified;
 
     //AsyncStorage.setItem('secretPhrase', '');
 

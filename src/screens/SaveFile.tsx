@@ -1,11 +1,13 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import DocumentPicker, { types } from 'react-native-document-picker';
 import FileViewer from 'react-native-file-viewer';
 import { useDispatch, useSelector } from 'react-redux';
+import { useForm, Controller } from 'react-hook-form';
 import { RootState } from '../store';
 import Button from '../components/ui/Button';
+import Input from '../components/ui/Input';
 import BottomContainer from '../components/BottomContainer';
 import DocumentItem from '../components/DocumentItem';
 import FilePasswordModal, {
@@ -23,9 +25,14 @@ type CheckFilePassword = {
   filePassword: string;
 };
 
+type SearchFileInput = {
+  fileSearch: string;
+};
+
 function SaveFile({ navigation }: ISaveFile): JSX.Element {
   const dispatch = useDispatch();
   const { fileData } = useSelector((state: RootState) => state.fileReducer);
+  const { control, getValues, watch } = useForm<SearchFileInput>();
   const [isSetPasswordModalVisible, setIsSetPasswordModalVisible] =
     useState<boolean>(false);
   const [checkPasswordData, setCheckPasswordData] = useState<CheckFilePassword>(
@@ -37,6 +44,14 @@ function SaveFile({ navigation }: ISaveFile): JSX.Element {
   );
   const [storedFile, setStoredFile] = useState<IFileDocument>();
   const [isPasswordWrong, setIsPasswordWrong] = useState<boolean>(false);
+  const searchValue = getValues('fileSearch');
+  const searchedFileData = useMemo(
+    () =>
+      searchValue !== undefined
+        ? fileData.filter(file => file.name?.includes(searchValue))
+        : fileData,
+    [watch('fileSearch'), fileData],
+  );
 
   const handleDocumentSelection = useCallback(async () => {
     try {
@@ -84,9 +99,19 @@ function SaveFile({ navigation }: ISaveFile): JSX.Element {
 
   return (
     <ScrollView contentContainerStyle={styles.screenContainer}>
-      {fileData.length > 0 && (
+      <View style={{ marginTop: 10 }}>
+        <Controller
+          control={control}
+          render={() => (
+            <Input name="fileSearch" iconName="search" control={control} />
+          )}
+          name="fileSearch"
+          rules={{ required: false }}
+        />
+      </View>
+      {searchedFileData.length > 0 && (
         <View style={styles.filesContainer}>
-          {fileData.map(file => (
+          {searchedFileData.map(file => (
             <DocumentItem
               {...file}
               onFilePress={() =>
