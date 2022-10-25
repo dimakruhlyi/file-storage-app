@@ -5,6 +5,7 @@ import Text, { TextAlign } from './typography/Text';
 import { useDispatch } from 'react-redux';
 import { removeFile } from '../store/slices/fileSlice';
 import Iconm from './ui/Iconm';
+import { getFileImage } from '../settings/fileTypes';
 
 interface IDocumentItem {
   name: string | null;
@@ -27,10 +28,7 @@ function DocumentItem(props: IDocumentItem): JSX.Element {
         onPress={onRemovePress}>
         <Iconm name="close" size={16} color={COLORS.darkgray} />
       </TouchableOpacity>
-      <Image
-        source={require('../../assets/images/files/pdf.png')}
-        style={styles.imageStyle}
-      />
+      <Image source={getFileImage(type!)} style={styles.imageStyle} />
       <Text size={16} align={TextAlign.Center} style={{ marginTop: 5 }}>
         {name}
       </Text>

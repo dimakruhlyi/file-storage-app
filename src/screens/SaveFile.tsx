@@ -57,7 +57,7 @@ function SaveFile({ navigation }: ISaveFile): JSX.Element {
     try {
       const response = await DocumentPicker.pick({
         presentationStyle: 'fullScreen',
-        type: [types.pdf],
+        type: [types.pdf, types.doc, types.docx, types.xls, types.xlsx],
       });
       const resultObj = { ...response[0], filePassword: '' };
       setStoredFile(resultObj);
