@@ -6,8 +6,7 @@ import AppDrawerContent from './AppDrawerContent';
 import { SCREEN, NAVIGATION_STACK } from './constants';
 import { NavigationProp } from '@react-navigation/native';
 import { COLORS } from '../shared/constants';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store';
+import { useTypedSelector } from '../hooks/redux';
 import Iconm from '../components/ui/Iconm';
 import Home from '../screens/Home';
 import SignIn from '../screens/SignIn';
@@ -62,7 +61,7 @@ const MainStackOptions = (navigation: NavigationProp<any, any>) => {
 
 
 function MainStackNavigation({ navigation }: { navigation: NavigationProp<any, any>; }) {
-  const { secretPhrase } = useSelector((state: RootState) => state.mainReducer);
+  const { secretPhrase } = useTypedSelector(state => state.mainReducer)
   return (
     <MainStack.Navigator>
       <MainStack.Group screenOptions={{

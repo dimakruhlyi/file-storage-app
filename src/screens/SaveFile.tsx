@@ -3,9 +3,8 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import DocumentPicker, { types } from 'react-native-document-picker';
 import FileViewer from 'react-native-file-viewer';
-import { useDispatch, useSelector } from 'react-redux';
+import { useTypedDispatch, useTypedSelector } from '../hooks/redux';
 import { useForm, Controller } from 'react-hook-form';
-import { RootState } from '../store';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import BottomContainer from '../components/BottomContainer';
@@ -30,8 +29,8 @@ type SearchFileInput = {
 };
 
 function SaveFile({ navigation }: ISaveFile): JSX.Element {
-  const dispatch = useDispatch();
-  const { fileData } = useSelector((state: RootState) => state.fileReducer);
+  const dispatch = useTypedDispatch();
+  const { fileData } = useTypedSelector(state => state.fileReducer);
   const { control, getValues, watch } = useForm<SearchFileInput>();
   const [isSetPasswordModalVisible, setIsSetPasswordModalVisible] =
     useState<boolean>(false);

@@ -4,8 +4,7 @@ import { NavigationProp } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthProvider';
 import Button from '../components/ui/Button';
 import Text, { FontWeights, TextAlign } from '../components/typography/Text';
-import { useSelector } from 'react-redux';
-import type { RootState } from '../store';
+import { useTypedSelector } from '../hooks/redux';
 import SecretVerifyModal from '../components/SecretVerifyModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SCREEN } from '../navigation/constants';
@@ -20,7 +19,7 @@ interface IHome {
 
 function Home({ route, navigation }: IHome): JSX.Element {
     const isSecretCreateFlow = route.params?.isSecretCreateFlow;
-    const { secretPhrase, isSecretVerified } = useSelector((state: RootState) => state.mainReducer);
+    const { secretPhrase, isSecretVerified } = useTypedSelector(state => state.mainReducer);
     const { user } = useContext(AuthContext);
     const showSecretVerifyModal = !isSecretCreateFlow && secretPhrase && !isSecretVerified;
 
