@@ -42,7 +42,7 @@ const MainStackOptions = (navigation: NavigationProp<any, any>) => {
     });
   };
 
-  console.log('navigation:', navigation);
+  // console.log('navigation:', navigation);
 
   return {
     headerTitle: () => null,
